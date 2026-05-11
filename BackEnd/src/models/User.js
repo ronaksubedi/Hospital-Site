@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import express from "express";
+  
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["patient", "admin"],
+      enum: ["patient", "doctor", "admin"],
       default: "patient",
     },
     isVerified: {
@@ -41,4 +42,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

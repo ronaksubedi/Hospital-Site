@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import express from "express";
 
 const contactSchema = new mongoose.Schema(
   {

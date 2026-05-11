@@ -1,7 +1,14 @@
 import mongoose from "mongoose";
+import express from "express";
 
 const doctorSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true,   // unique,"one user can only be one doctor"
+    },
     name: {
       type: String,
       required: true,
