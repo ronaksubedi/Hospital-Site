@@ -11,6 +11,7 @@ import appointmentRoutes from "./src/routes/appointmentRoutes.js";
 import serviceRoutes from "./src/routes/serviceRoutes.js";
 import blogRoutes from "./src/routes/blogRoutes.js";
 import contactRoutes from "./src/routes/contactRoutes.js";
+import { errorHandler, notFound } from "./src/middlewares/errorMiddleware.js";
 
 
 dotenv.config(
@@ -35,6 +36,10 @@ app.use("/api/appointments", appointmentRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/contact", contactRoutes);
+
+//error Middleware
+app.use(notFound);
+app.use(errorHandler);
 
 //connect to db and start server
 mongoose
