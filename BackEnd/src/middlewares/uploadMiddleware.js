@@ -57,25 +57,33 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// export upload middlewares
-export const uploadDoctorPhoto = multer({
-  storage: doctorStorage,
-  fileFilter,
-}).single("photo");
+// upload middlewares — wrapped for Express 5 compatibility
+export const uploadDoctorPhoto = (req, res, next) => {
+  multer({ storage: doctorStorage, fileFilter }).single("photo")(req, res, (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    next();
+  });
+};
 
-export const uploadBlogImage = multer({
-  storage: blogStorage,
-  fileFilter,
-}).single("coverImage");
+export const uploadBlogImage = (req, res, next) => {
+  multer({ storage: blogStorage, fileFilter }).single("coverImage")(req, res, (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    next();
+  });
+};
 
-export const uploadServiceImage = multer({
-  storage: serviceStorage,
-  fileFilter,
-}).single("image");
+export const uploadServiceImage = (req, res, next) => {
+  multer({ storage: serviceStorage, fileFilter }).single("image")(req, res, (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    next();
+  });
+};
 
-export const uploadAvatar = multer({
-  storage: avatarStorage,
-  fileFilter,
-}).single("avatar");
+export const uploadAvatar = (req, res, next) => {
+  multer({ storage: avatarStorage, fileFilter }).single("avatar")(req, res, (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    next();
+  });
+};
 
 export { cloudinary };
