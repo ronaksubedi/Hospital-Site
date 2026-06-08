@@ -16,7 +16,7 @@ export const bookAppointment = async (req, res) => {
     }
 
     // check if slot already booked
-    const slotTaken = await Appointment.findOne({
+     const slotTaken = await Appointment.findOne({
       doctor,
       date: new Date(date),
       timeSlot,
@@ -29,7 +29,7 @@ export const bookAppointment = async (req, res) => {
     const appointment = await Appointment.create({
       patient: req.user._id,
       doctor,
-      service,
+      service: service || null, // fix — empty string becomes null
       date: new Date(date),
       timeSlot,
       notes,
@@ -41,6 +41,7 @@ export const bookAppointment = async (req, res) => {
       appointment,
     });
   } catch (error) {
+    console.log("APPOINTMENT ERROR:", error.message);
     res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };

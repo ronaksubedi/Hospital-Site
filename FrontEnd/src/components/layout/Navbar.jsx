@@ -1,10 +1,13 @@
-import { Link, useLocation } from "react-router-dom";
-import { Phone, Clock, MapPin, Search, Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Phone, Clock, MapPin, Search, Menu, X, User } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -17,117 +20,104 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
-    <header className="w-full">
+    <header style={{ width: "100%" }}>
       {/* Top Bar */}
-      <div className="bg-white border-b border-gray-100 py-3 px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="text-2xl font-bold">
-            <span className="text-gray-900">MED</span>
-            <span className="text-blue-500">DICAL</span>
+      <div style={{ background: "white", borderBottom: "1px solid #F3F4F6", padding: "12px 24px" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Link to="/" style={{ fontSize: "24px", fontWeight: "800", textDecoration: "none" }}>
+            <span style={{ color: "#111827" }}>MED</span>
+            <span style={{ color: "#3B82F6" }}>DICAL</span>
           </Link>
 
-          {/* Info */}
-          <div className="hidden md:flex items-center gap-8">
-            <div className="flex items-center gap-2">
-              <div className="bg-blue-50 p-2 rounded-full">
-                <Phone className="w-4 h-4 text-blue-500" />
+          <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+            {[
+              { icon: <Phone size={16} color="#3B82F6" />, label: "Emergency", value: "(237) 681-812-255" },
+              { icon: <Clock size={16} color="#3B82F6" />, label: "Work Hour", value: "09:00 - 20:00 Everyday" },
+              { icon: <MapPin size={16} color="#3B82F6" />, label: "Location", value: "0123 Some Place" },
+            ].map((item, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <div style={{ background: "#EFF6FF", padding: "8px", borderRadius: "50%" }}>{item.icon}</div>
+                <div>
+                  <p style={{ fontSize: "11px", color: "#9CA3AF", textTransform: "uppercase", fontWeight: "500", margin: 0 }}>{item.label}</p>
+                  <p style={{ fontSize: "13px", fontWeight: "600", color: "#3B82F6", margin: 0 }}>{item.value}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase font-medium">Emergency</p>
-                <p className="text-sm font-semibold text-blue-500">(237) 681-812-255</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="bg-blue-50 p-2 rounded-full">
-                <Clock className="w-4 h-4 text-blue-500" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase font-medium">Work Hour</p>
-                <p className="text-sm font-semibold text-blue-500">09:00 - 20:00 Everyday</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="bg-blue-50 p-2 rounded-full">
-                <MapPin className="w-4 h-4 text-blue-500" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase font-medium">Location</p>
-                <p className="text-sm font-semibold text-blue-500">0123 Some Place</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Nav Bar */}
-      <nav className="bg-[#1B2F6E] py-4 px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
+      <nav style={{ background: "#1B2F6E", padding: "16px 24px" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
             {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(link.path)
-                    ? "text-white font-semibold"
-                    : "text-gray-300 hover:text-white"
-                }`}
+              <Link key={link.path} to={link.path}
+                style={{ fontSize: "14px", fontWeight: isActive(link.path) ? "700" : "500", color: isActive(link.path) ? "white" : "#93C5FD", textDecoration: "none" }}
               >
                 {link.name}
               </Link>
             ))}
           </div>
 
-          {/* Right Side */}
-          <div className="hidden md:flex items-center gap-4">
-            <button className="text-white hover:text-gray-300 transition">
-              <Search className="w-5 h-5" />
-            </button>
-            <Link
-              to="/appointments"
-              className="bg-white text-[#1B2F6E] px-6 py-2 rounded-full text-sm font-semibold hover:bg-blue-50 transition"
-            >
-              Appointment
-            </Link>
-          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <Search size={20} color="white" style={{ cursor: "pointer" }} />
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+            {user ? (
+  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+    {user.role === "doctor" && (
+      <Link to="/doctor-dashboard"
+        style={{ color: "white", fontSize: "13px", fontWeight: "500", textDecoration: "none", opacity: 0.9 }}
+      >
+        My Dashboard
+      </Link>
+    )}
+    {user.role === "patient" && (
+      <Link to="/my-appointments"
+        style={{ color: "white", fontSize: "13px", fontWeight: "500", textDecoration: "none", opacity: 0.9 }}
+      >
+        My Appointments
+      </Link>
+    )}
+    {user.role === "admin" && (
+      <Link to="/admin"
+        style={{ color: "white", fontSize: "13px", fontWeight: "500", textDecoration: "none", opacity: 0.9 }}
+      >
+        Admin Panel
+      </Link>
+    )}
+    <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "white", fontSize: "13px" }}>
+      <User size={16} />
+      <span>{user.name}</span>
+    </div>
+    <button onClick={handleLogout}
+      style={{ background: "transparent", border: "1px solid white", color: "white", padding: "6px 16px", borderRadius: "999px", fontSize: "13px", fontWeight: "600", cursor: "pointer" }}
+    >
+      Logout
+    </button>
+  </div>
+) : (
+  <div style={{ display: "flex", gap: "8px" }}>
+    <Link to="/login"
+      style={{ color: "white", padding: "8px 16px", borderRadius: "999px", fontSize: "13px", fontWeight: "600", textDecoration: "none", border: "1px solid rgba(255,255,255,0.3)" }}
+      >
+       Login
+      </Link>
+      <Link to="/appointments"
+      style={{ background: "white", color: "#1B2F6E", padding: "8px 20px", borderRadius: "999px", fontSize: "13px", fontWeight: "700", textDecoration: "none" }}
+        >
+      Appointment
+    </Link>
+  </div>
+)}
+          </div>
         </div>
-
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div className="md:hidden mt-4 flex flex-col gap-4 px-4 pb-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMenuOpen(false)}
-                className={`text-sm font-medium ${
-                  isActive(link.path) ? "text-white" : "text-gray-300"
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Link
-              to="/appointments"
-              className="bg-white text-[#1B2F6E] px-6 py-2 rounded-full text-sm font-semibold text-center"
-            >
-              Appointment
-            </Link>
-          </div>
-        )}
       </nav>
     </header>
   );
