@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, User, ToggleLeft, ToggleRight } from "lucide-react";
 
@@ -21,10 +22,10 @@ const DoctorDashboard = () => {
   const fetchData = async () => {
     try {
       const [aptsRes, doctorsRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/appointments/doctor", {
+        api.get("/api/appointments/doctor", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axios.get("http://localhost:5000/api/doctors", {
+        api.get("/api/doctors", {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -42,8 +43,8 @@ const DoctorDashboard = () => {
   const handleToggle = async () => {
     if (!doctorProfile) return;
     try {
-      const res = await axios.patch(
-        `http://localhost:5000/api/doctors/${doctorProfile._id}/availability`,
+      const res = await api.patch(
+        `/api/doctors/${doctorProfile._id}/availability`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

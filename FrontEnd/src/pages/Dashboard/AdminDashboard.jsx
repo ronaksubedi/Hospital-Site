@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { UserCheck, Calendar, Activity, Mail } from "lucide-react";
 import CreateBlogForm from "./CreateBlogForm";
@@ -25,10 +26,10 @@ const AdminDashboard = () => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
       const [docRes, aptRes, contactRes, blogRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/doctors", { headers }),
-        axios.get("http://localhost:5000/api/appointments/all", { headers }),
-        axios.get("http://localhost:5000/api/contact", { headers }),
-        axios.get("http://localhost:5000/api/blogs/admin", { headers }),
+        api.get("/api/doctors", { headers }),
+        api.get("/api/appointments/all", { headers }),
+        api.get("/api/contact", { headers }),
+        api.get("/api/blogs/admin", { headers }),
       ]);
       setDoctors(docRes.data.doctors);
       setAppointments(aptRes.data.appointments);
@@ -43,8 +44,8 @@ const AdminDashboard = () => {
 
   const handleAppointmentStatus = async (id, status) => {
     try {
-      await axios.patch(
-        `http://localhost:5000/api/appointments/${id}/status`,
+      await api.patch(
+        `/api/appointments/${id}/status`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -56,8 +57,8 @@ const AdminDashboard = () => {
 
   const handleContactStatus = async (id, status) => {
     try {
-      await axios.patch(
-        `http://localhost:5000/api/contact/${id}/status`,
+      await api.patch(
+        `/api/contact/${id}/status`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -70,7 +71,7 @@ const AdminDashboard = () => {
   const handleDeleteDoctor = async (id) => {
     if (!window.confirm("Are you sure you want to remove this doctor?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/doctors/${id}`, {
+      await api.delete(`/api/doctors/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchAll();
@@ -81,7 +82,7 @@ const AdminDashboard = () => {
 
   const handleToggleBlog = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/blogs/${id}/toggle`, {}, {
+      await api.patch(`/api/blogs/${id}/toggle`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchAll();
@@ -93,7 +94,7 @@ const AdminDashboard = () => {
   const handleDeleteBlog = async (id) => {
     if (!window.confirm("Are you sure you want to delete this blog?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/blogs/${id}`, {
+      await api.delete(`/api/blogs/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchAll();

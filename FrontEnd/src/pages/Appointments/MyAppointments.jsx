@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, User, X } from "lucide-react";
+import api from "../../services/api";
 
 const MyAppointments = () => {
   const { user, token } = useAuth();
@@ -18,7 +18,7 @@ const MyAppointments = () => {
 
   const fetchAppointments = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/appointments/my", {
+      const res = await api.get("/api/appointments/my", {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAppointments(res.data.appointments);
@@ -31,7 +31,7 @@ const MyAppointments = () => {
 
   const handleCancel = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/appointments/${id}/cancel`, {}, {
+      await api.patch(`/api/appointments/${id}/cancel`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCancelMsg("Appointment cancelled successfully.");

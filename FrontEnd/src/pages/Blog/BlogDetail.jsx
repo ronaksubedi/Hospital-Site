@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 import { Calendar, User, ArrowLeft, Tag } from "lucide-react";
+import api from "../../services/api";
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -9,7 +9,7 @@ const BlogDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/blogs/slug/${slug}`)
+    api.get(`/api/blogs/slug/${slug}`)
       .then(res => setBlog(res.data.blog))
       .catch(err => console.log(err))
       .finally(() => setLoading(false));

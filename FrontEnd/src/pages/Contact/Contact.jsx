@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import api from "../../services/api";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 
 const Contact = () => {
@@ -16,7 +17,7 @@ const Contact = () => {
     setSuccess("");
     setError("");
     try {
-      await axios.post("http://localhost:5000/api/contact", form);
+      await api.post("/api/contact", form);
       setSuccess("Message sent successfully! We'll get back to you soon.");
       setForm({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (err) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
+import api from "../../services/api";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -9,7 +9,7 @@ const Services = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/services?search=${search}`)
+    api.get(`/api/services?search=${search}`)
       .then(res => setServices(res.data.services))
       .catch(err => console.log(err))
       .finally(() => setLoading(false));

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { Star, Clock, Award, Phone, Mail, ArrowLeft } from "lucide-react";
+import api from "../../services/api";
 
 const DoctorDetail = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const DoctorDetail = () => {
   const [ratingMsg, setRatingMsg] = useState("");
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/doctors/${id}`)
+    api.get(`/api/doctors/${id}`)
       .then(res => setDoctor(res.data.doctor))
       .catch(err => console.log(err))
       .finally(() => setLoading(false));
@@ -25,8 +26,8 @@ const DoctorDetail = () => {
       return;
     }
     try {
-      const res = await axios.post(
-        `http://localhost:5000/api/doctors/${id}/rate`,
+      const res = await api.post(
+        `/api/doctors/${id}/rate`,
         { rating: value },
         { headers: { Authorization: `Bearer ${token}` } }
       );

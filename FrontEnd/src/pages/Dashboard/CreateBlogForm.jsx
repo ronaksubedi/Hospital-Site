@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import api from "../../services/api";
 
 const CreateBlogForm = ({ token, onSuccess }) => {
   const [form, setForm] = useState({
@@ -20,7 +21,7 @@ const CreateBlogForm = ({ token, onSuccess }) => {
       Object.keys(form).forEach(key => formData.append(key, form[key]));
       if (coverImage) formData.append("coverImage", coverImage);
 
-      await axios.post("http://localhost:5000/api/blogs", formData, {
+      await api.post("/api/blogs", formData, {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
       });
       onSuccess();

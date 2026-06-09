@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../../services/api";
 
 const DoctorsSection = () => {
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/doctors")
+    api.get("/api/doctors")
       .then(res => setDoctors(res.data.doctors.slice(0, 4)))
       .catch(err => console.log(err));
   }, []);
