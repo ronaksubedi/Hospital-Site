@@ -22,7 +22,7 @@ dotenv.config(
 
 const app = express();
 
-const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:4173,http://localhost:5173")
+const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:4173,http://localhost:5173,https://hospitalsite.ronaksubedi.com.np")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
