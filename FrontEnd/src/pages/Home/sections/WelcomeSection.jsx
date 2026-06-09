@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const WelcomeSection = () => {
   return (
     <div className="py-20 px-6">
@@ -13,9 +15,9 @@ const WelcomeSection = () => {
           scelerisque tortor ornare ornare. Convallis felis vitae tortor augue. Velit
           nascetur proin massa in. Consequat faucibus porttitor enim et.
         </p>
-        <button className="mt-8 text-blue-500 font-semibold flex items-center gap-2 mx-auto hover:gap-4 transition-all">
+        <Link to="/about" className="mt-8 text-blue-500 font-semibold flex items-center gap-2 mx-auto hover:gap-4 transition-all w-fit">
           Learn More →
-        </button>
+        </Link>
       </div>
     </div>
   );

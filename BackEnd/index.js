@@ -22,10 +22,22 @@ dotenv.config(
 
 const app = express();
 
-const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000")
+const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:4173,http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) {
+    return true;
+  }
+
+  if (allowedOrigins.includes(origin)) {
+    return true;
+  }
+
+  return origin.endsWith(".vercel.app");
+};
 
 
 //middlewares
@@ -33,7 +45,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (isAllowedOrigin(origin)) {
         return callback(null, true);
       }
       return callback(new Error("Origin not allowed by CORS"));
