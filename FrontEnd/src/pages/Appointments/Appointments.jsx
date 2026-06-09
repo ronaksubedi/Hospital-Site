@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
 const Appointments = () => {
@@ -32,8 +32,8 @@ const Appointments = () => {
 
   useEffect(() => {
     if (!user) { navigate("/login"); return; }
-    axios.get("http://localhost:5000/api/doctors?available=true").then(res => setDoctors(res.data.doctors));
-    axios.get("http://localhost:5000/api/services").then(res => setServices(res.data.services));
+    api.get("/api/doctors?available=true").then(res => setDoctors(res.data.doctors));
+    api.get("/api/services").then(res => setServices(res.data.services));
   }, [user]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -44,7 +44,7 @@ const Appointments = () => {
     setError("");
     setSuccess("");
     try {
-      await axios.post("http://localhost:5000/api/appointments", form, {
+      await api.post("/api/appointments", form, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccess("Appointment booked successfully!");
