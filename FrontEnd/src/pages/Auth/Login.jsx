@@ -18,6 +18,7 @@ const Login = () => {
     setError("");
     try {
       const res = await api.post("/api/auth/login", form);
+      localStorage.setItem("authToken", res.data.token);
       login(res.data.user, res.data.token);
       navigate("/");
     } catch (err) {
@@ -51,11 +52,11 @@ const Login = () => {
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div>
             <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px", display: "block" }}>Email</label>
-            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="john@example.com" required style={inputStyle} />
+            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="john@example.com" required style={inputStyle} autoComplete="email" />
           </div>
           <div>
             <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px", display: "block" }}>Password</label>
-            <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="••••••••" required style={inputStyle} />
+            <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="••••••••" required style={inputStyle} autoComplete="current-password" />
           </div>
 
           <button type="submit" disabled={loading}

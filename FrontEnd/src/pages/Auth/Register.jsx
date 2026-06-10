@@ -18,6 +18,7 @@ const Register = () => {
     setError("");
     try {
       const res = await api.post("/api/auth/register", form);
+      localStorage.setItem("authToken", res.data.token);
       login(res.data.user, res.data.token);
       navigate("/");
     } catch (err) {
@@ -51,19 +52,19 @@ const Register = () => {
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div>
             <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px", display: "block" }}>Full Name</label>
-            <input name="name" value={form.name} onChange={handleChange} placeholder="John Doe" required style={inputStyle} />
+            <input name="name" value={form.name} onChange={handleChange} placeholder="John Doe" required style={inputStyle} autoComplete="name" />
           </div>
           <div>
             <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px", display: "block" }}>Email</label>
-            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="john@example.com" required style={inputStyle} />
+            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="john@example.com" required style={inputStyle} autoComplete="email" />
           </div>
           <div>
             <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px", display: "block" }}>Phone</label>
-            <input name="phone" value={form.phone} onChange={handleChange} placeholder="9800000000" style={inputStyle} />
+            <input name="phone" value={form.phone} onChange={handleChange} placeholder="9800000000" style={inputStyle} autoComplete="tel" />
           </div>
           <div>
             <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px", display: "block" }}>Password</label>
-            <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="••••••••" required style={inputStyle} />
+            <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="••••••••" required style={inputStyle} autoComplete="new-password" />
           </div>
 
           <button type="submit" disabled={loading}
