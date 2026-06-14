@@ -11,58 +11,25 @@ import appointmentRoutes from "./src/routes/appointmentRoutes.js";
 import serviceRoutes from "./src/routes/serviceRoutes.js";
 import blogRoutes from "./src/routes/blogRoutes.js";
 import contactRoutes from "./src/routes/contactRoutes.js";
-import { errorHandler, notFound } from "./src/middlewares/errorMiddleware.js";
+import { notFound, errorHandler } from "./src/middlewares/errorMiddleware.js";
 
-
-dotenv.config(
-  {
-    quiet: true
-  }
-);
+dotenv.config();
 
 const app = express();
 
-const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:4173,http://localhost:5173,https://hospitalsite.ronaksubedi.com.np")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-
-const isAllowedOrigin = (origin) => {
-  if (!origin) {
-    return true;
-  }
-
-  if (allowedOrigins.includes(origin)) {
-    return true;
-  }
-
-  return origin.endsWith(".vercel.app");
-};
-
-
-//middlewares
+// middlewares
 app.use(express.json());
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (isAllowedOrigin(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("Origin not allowed by CORS"));
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://hospitalsite.ronaksubedi.com.np",
+  ],
+  credentials: true,
+}));
 app.use(morgan("dev"));
 app.use(cookieParser());
 
-app.get("/api/health", (req, res) => {
-  res.status(200).json({ status: "ok" });
-});
-
-//routes
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/appointments", appointmentRoutes);
@@ -70,16 +37,16 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/contact", contactRoutes);
 
-//error Middleware
+// error middlewares
 app.use(notFound);
 app.use(errorHandler);
 
-//connect to db and start server
+// connect to db and start server
 mongoose
   .connect(process.env.DB_URL)
-  .then((val) => {
-    app.listen(process.env.PORT, () => {
-      console.log(`Server is running on port ${process.env.PORT}`);
+  .then(() => {
+    app.listen(process.env.PORT || 5000, () => {
+      console.log(`Server is running on port ${process.env.PORT || 5000}`);
       console.log("Connected to MongoDB");
     });
   })

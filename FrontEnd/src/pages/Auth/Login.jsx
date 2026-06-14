@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../../services/api";
+import API from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
@@ -17,8 +17,7 @@ const Login = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await api.post("/api/auth/login", form);
-      localStorage.setItem("authToken", res.data.token);
+      const res = await API.post("/api/auth/login", form);
       login(res.data.user, res.data.token);
       navigate("/");
     } catch (err) {
@@ -33,7 +32,6 @@ const Login = () => {
   return (
     <div style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFF", padding: "40px 24px" }}>
       <div style={{ background: "white", borderRadius: "16px", padding: "48px", boxShadow: "0 4px 24px rgba(0,0,0,0.08)", width: "100%", maxWidth: "440px" }}>
-        
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <div style={{ fontSize: "24px", fontWeight: "800", marginBottom: "8px" }}>
             <span style={{ color: "#111827" }}>MED</span>
@@ -52,13 +50,12 @@ const Login = () => {
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <div>
             <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px", display: "block" }}>Email</label>
-            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="john@example.com" required style={inputStyle} autoComplete="email" />
+            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="john@example.com" required style={inputStyle} />
           </div>
           <div>
             <label style={{ fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px", display: "block" }}>Password</label>
-            <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="••••••••" required style={inputStyle} autoComplete="current-password" />
+            <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="••••••••" required style={inputStyle} />
           </div>
-
           <button type="submit" disabled={loading}
             style={{ background: "#1B2F6E", color: "white", padding: "14px", borderRadius: "8px", fontWeight: "600", fontSize: "15px", border: "none", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1, marginTop: "8px" }}
           >
