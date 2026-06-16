@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import api from "../../services/api";
+import api from "../../utils/api";
 
 const CreateBlogForm = ({ token, onSuccess }) => {
   const [form, setForm] = useState({

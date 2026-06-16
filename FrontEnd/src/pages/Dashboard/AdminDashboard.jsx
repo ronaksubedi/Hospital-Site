@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import api from "../../services/api";
+import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import { UserCheck, Calendar, Activity, Mail } from "lucide-react";
 import CreateBlogForm from "./CreateBlogForm";
